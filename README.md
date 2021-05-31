@@ -18,6 +18,12 @@ https://ieeexplore.ieee.org/abstract/document/9439420/
 - 里面对AIE Engine做了一些介绍；
 - 对MLIR生成AIE code做了介绍，但是我觉得没有啥价值：主要没有讲清楚客户侧MLIR编程的方式；
 
+https://homes.cs.washington.edu/~arvind/papers/tvm.pdf
+- TVM paper;
+
+https://riscv.org/wp-content/uploads/2019/03/16.45-Enabling-TVM-on-RISC-V-Architectures-with-SIMD-Instructions-v2.pdf
+- TVM for RISC-V
+
 # Open Courses
  CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
 - Designing intermediate representations;
