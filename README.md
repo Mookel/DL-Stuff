@@ -24,6 +24,9 @@ https://homes.cs.washington.edu/~arvind/papers/tvm.pdf
 https://riscv.org/wp-content/uploads/2019/03/16.45-Enabling-TVM-on-RISC-V-Architectures-with-SIMD-Instructions-v2.pdf
 - TVM for RISC-V
 
+https://ictjournal.itri.org.tw/content/Messagess/contents.aspx?MmmID=654304432061644411&MSID=1073702176133520045
+- TVM深度學習編譯技术概述
+
 # Open Courses
  CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
 - Designing intermediate representations;
