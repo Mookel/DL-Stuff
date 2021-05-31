@@ -13,6 +13,11 @@ https://zhuanlan.zhihu.com/p/87664838
 https://github.com/whitelok/tvm-lesson
 - TVM lesson
 
+https://ieeexplore.ieee.org/abstract/document/9439420/
+- Xilinx Lab所撰写的survey paper；
+- 里面对AIE Engine做了一些介绍；
+- 对MLIR生成AIE code做了介绍，但是我觉得没有啥价值：主要没有讲清楚客户侧MLIR编程的方式；
+
 # Open Courses
  CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
 - Designing intermediate representations;
