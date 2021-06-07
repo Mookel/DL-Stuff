@@ -30,11 +30,13 @@ https://github.com/whitelok/tvm-lesson
 - TVM lesson
 
 # MLIR
-https://ieeexplore.ieee.org/abstract/document/9439420/
+The Evolution of Domain-Specific Computing for Deep Learning [https://ieeexplore.ieee.org/abstract/document/9439420/]
 - Xilinx Lab所撰写的survey paper；
 - 里面对AIE Engine做了一些介绍；
 - 对MLIR生成AIE code做了介绍，但是我觉得没有啥价值：主要没有讲清楚客户侧MLIR编程的方式；
 
-MLIR: A Compiler Infrastructure for the End of Moore's Law [paper: https://arxiv.org/abs/2002.11054]
+MLIR: A Compiler Infrastructure for the End of Moore's Law [https://arxiv.org/abs/2002.11054]
 
 Multi-Level Intermediate Representation Compiler Infrastructure [https://docs.google.com/presentation/d/11-VjSNNNJoRhPlLxFgvtb909it1WNdxTnQFipryfAPU/edit#slide=id.g7d334b12e5_0_4]
+
+Thoughts on Tensor Code Generation in MLIR [https://drive.google.com/file/d/1PKY5yVEL0Dl5UHaok4NgpxnbwXbi5pxS/view][https://docs.google.com/presentation/d/1M44If0Lw2lnrlyE_xNU1WOmXWxLo9FibMwdUbrAhOhU/edit#slide=id.g5fd22bdf8c_0_0]
