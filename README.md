@@ -6,14 +6,6 @@
 
 
 
-# Open Courses
-
-- CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
-  - Designing intermediate representations;
-  - IR design, transformations, and code generation;
-
-
-
 # Halide
 
 - Decoupling Algorithms from Schedules for Easy Optimization of Image Processing Pipelines [[paper](https://people.csail.mit.edu/jrk/halide12/halide12.pdf)] 
@@ -55,8 +47,21 @@
 
 
 
+# RISC-V
+
+- Design of the RISC-V Instruction Set Architecture [[thesis](https://digitalassets.lib.berkeley.edu/etd/ucb/text/Waterman_berkeley_0028E_15908.pdf)]
+
+
+
 # Tech Talk
 
 - The Golden Age of Compilers, in an era of Hardware/Software co-design [[slide](https://docs.google.com/presentation/d/1ZMtzT6nmfvNOlIaHRzdaXpFeaAklcT7DvfGjhgpzcxk/edit#slide=id.p)] [[video](https://drive.google.com/file/d/1eIxFZZLOM7a3LYL1QaKhflKl0jRLPp-V/view)]
   - A discussion about accelerator design, benefits of reducing fragmentation by standardizing non-differentiated parts of large scale HW/SW systems.
 
+
+
+# Open Courses
+
+- CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
+  - Designing intermediate representations;
+  - IR design, transformations, and code generation;
