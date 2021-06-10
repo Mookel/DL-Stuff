@@ -4,6 +4,12 @@
   - 说明了DL Compiler领域需要解决的问题；
   - 强调了Halide的短板和TVM，TC要解决的问题；
 
+- The Evolution of Domain-Specific Computing for Deep Learning [[paper](https://ieeexplore.ieee.org/abstract/document/9439420/)]
+  - Xilinx Lab所撰写的survey paper；
+  - 里面对AIE Engine做了一些介绍；
+  - 对MLIR生成AIE code做了简单介绍；
+- Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
+
 
 
 # Halide
@@ -28,22 +34,29 @@
 
 # MLIR
 
-- The Evolution of Domain-Specific Computing for Deep Learning [[paper](https://ieeexplore.ieee.org/abstract/document/9439420/)]
-  - Xilinx Lab所撰写的survey paper；
-  - 里面对AIE Engine做了一些介绍；
-  - 对MLIR生成AIE code做了介绍，但是我觉得没有啥价值：主要没有讲清楚客户侧MLIR编程的方式；
-
-
-
 - MLIR: A Compiler Infrastructure for the End of Moore's Law [[paper](https://arxiv.org/abs/2002.11054)]
 
 
 
 - Multi-Level Intermediate Representation Compiler Infrastructure [[slide](https://docs.google.com/presentation/d/11-VjSNNNJoRhPlLxFgvtb909it1WNdxTnQFipryfAPU/edit#slide=id.g7d334b12e5_0_4)]
 
+  
 
+- MLIR: Scaling Compiler Infrastructure for Domain Specific Computation [[paper](https://research.google/pubs/pub49988/)]
+
+  
 
 - Thoughts on Tensor Code Generation in MLIR [[video](https://drive.google.com/file/d/1PKY5yVEL0Dl5UHaok4NgpxnbwXbi5pxS/view)] [[slide](https://docs.google.com/presentation/d/1M44If0Lw2lnrlyE_xNU1WOmXWxLo9FibMwdUbrAhOhU/edit#slide=id.g5fd22bdf8c_0_0)]
+
+
+
+- HIGH PERFORMANCE CODE GENERATION IN MLIR: AN EARLY CASE STUDY WITH GEMM [[paper](https://arxiv.org/pdf/2003.00532.pdf)]
+
+- Polyhedral Compilation Opportunities in MLIR [[slide](http://impact.gforge.inria.fr/impact2020/slides/IMPACT_2020_keynote.pdf)]
+
+
+
+- Compiling ONNX Neural Network Models Using MLIR [[paper](https://arxiv.org/pdf/2008.08272.pdf)]
 
 
 
@@ -53,15 +66,21 @@
 
 
 
-# Tech Talk
+# DSA
+
+- Custom Hardware Architectures for Deep Learning on Portable Devices: A Review [[paper](https://ieeexplore.ieee.org/abstract/document/9447019)]
+
+
+
+# Talks
 
 - The Golden Age of Compilers, in an era of Hardware/Software co-design [[slide](https://docs.google.com/presentation/d/1ZMtzT6nmfvNOlIaHRzdaXpFeaAklcT7DvfGjhgpzcxk/edit#slide=id.p)] [[video](https://drive.google.com/file/d/1eIxFZZLOM7a3LYL1QaKhflKl0jRLPp-V/view)]
   - A discussion about accelerator design, benefits of reducing fragmentation by standardizing non-differentiated parts of large scale HW/SW systems.
 
 
 
-# Open Courses
+# Courses
 
-- CS448h Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
+- CS448h - Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
   - Designing intermediate representations;
   - IR design, transformations, and code generation;
