@@ -30,17 +30,30 @@
 
 - TVM and XLA区别: https://zhuanlan.zhihu.com/p/87664838
 
+  
+
+- TVM schedule
+
+  - An Operational Model of Schedules in  Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
+
+
+
+- TVM Conf 2020 - Tutorials - Bring Your Own Codegen to TVM [[video](https://www.youtube.com/watch?v=DD8GdZ_OKco)]
+  - dev guide: https://tvm.apache.org/docs/dev/relay_bring_your_own_codegen.html
+  - blog: https://tvm.apache.org/2020/07/15/how-to-bring-your-own-codegen-to-tvm
+
+
+
+- Scalable and Intelligent Learning Systems [[thesis](https://digital.lib.washington.edu/researchworks/handle/1773/44766)]
+  - 陈天奇的phd thesis
+
 
 
 # MLIR
 
 - MLIR: A Compiler Infrastructure for the End of Moore's Law [[paper](https://arxiv.org/abs/2002.11054)]
 
-
-
 - Multi-Level Intermediate Representation Compiler Infrastructure [[slide](https://docs.google.com/presentation/d/11-VjSNNNJoRhPlLxFgvtb909it1WNdxTnQFipryfAPU/edit#slide=id.g7d334b12e5_0_4)]
-
-  
 
 - MLIR: Scaling Compiler Infrastructure for Domain Specific Computation [[paper](https://research.google/pubs/pub49988/)]
 
@@ -69,6 +82,7 @@
 # DSA
 
 - Custom Hardware Architectures for Deep Learning on Portable Devices: A Review [[paper](https://ieeexplore.ieee.org/abstract/document/9447019)]
+- 从GPU谈异构（4）[[zhihu](https://zhuanlan.zhihu.com/p/376409878)]
 
 
 
