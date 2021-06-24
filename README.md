@@ -1,3 +1,15 @@
+
+- [Comprehensive Survey](#comprehensive-survey)
+- [Halide](#halide)
+- [TVM](#tvm)
+- [MLIR](#mlir)
+- [RISC-V](#risc-v)
+- [DSA](#dsa)
+- [Talks](#talks)
+- [Courses](#courses)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 # Comprehensive Survey
 
 - Deep Learning Compilers [[slide](https://ucbrise.github.io/cs294-ai-sys-sp19/assets/lectures/lec12/dl-compilers.pdf)]
@@ -70,6 +82,12 @@
   
 
 - TVM Object System Multi language Support for just 19 99 [[video](https://www.youtube.com/watch?v=-TM_EPih4Co)]
+
+  - Cross-Language interaction in Deep Learning
+  - What is in an ABI?
+  - TVM Object System
+  - Packed Function
+  - Extending to Rust
 
   
 
