@@ -3,7 +3,6 @@
 - Deep Learning Compilers [[slide](https://ucbrise.github.io/cs294-ai-sys-sp19/assets/lectures/lec12/dl-compilers.pdf)]
   - 说明了DL Compiler领域需要解决的问题；
   - 强调了Halide的短板和TVM，TC要解决的问题；
-
 - The Evolution of Domain-Specific Computing for Deep Learning [[paper](https://ieeexplore.ieee.org/abstract/document/9439420/)]
   - Xilinx Lab所撰写的survey paper；
   - 里面对AIE Engine做了一些介绍；
@@ -45,7 +44,40 @@
 
 
 - Scalable and Intelligent Learning Systems [[thesis](https://digital.lib.washington.edu/researchworks/handle/1773/44766)]
+
   - 陈天奇的phd thesis
+
+    
+
+- Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
+
+
+
+- Bridging PyTorch and TVM [[web](https://tvm.apache.org/2020/07/14/bert-pytorch-tvm)]
+
+  
+
+- Compilation of Quantized Models in TVM [[pdf](http://lenlrx.cn/wp-content/uploads/2019/11/Nov8_TVM_meetup_Quantization.pdf)]
+
+
+
+- The quantization story for TVM [[web](https://discuss.tvm.apache.org/t/quantization-story/3920)]
+
+  
+
+- Graph partitioning a -nd Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+
+  
+
+- TVM Object System Multi language Support for just 19 99 [[video](https://www.youtube.com/watch?v=-TM_EPih4Co)]
+
+  
+
+- TVM PackedFunc实现机制 [[link](https://hjchen2.github.io/2020/01/10/TVM-PackedFunc%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/)]
+
+  
+
+- TVM Relay Build Flow [[link](https://zhuanlan.zhihu.com/p/257150960)]
 
 
 
@@ -98,3 +130,4 @@
 - CS448h - Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
   - Designing intermediate representations;
   - IR design, transformations, and code generation;
+
