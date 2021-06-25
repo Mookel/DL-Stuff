@@ -86,7 +86,6 @@
   - What is in an ABI?
   - TVM Object System
   - Packed Function
-  - Extending to Rust
 
   
 
@@ -95,6 +94,12 @@
   
 
 - TVM Relay Build Flow [[link](https://zhuanlan.zhihu.com/p/257150960)]
+
+  
+
+- TVM的“hello world“基础流程（上）[[link](https://blog.csdn.net/jinzhuojun/article/details/117135551)]
+
+- TVM中的IR设计与技术实现 [[blog](https://www.cnblogs.com/CocoML/p/14643355.html)]
 
 
 
@@ -147,4 +152,3 @@
 - CS448h - Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
   - Designing intermediate representations;
   - IR design, transformations, and code generation;
-
