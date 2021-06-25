@@ -4,8 +4,7 @@
 - [Halide](#halide)
 - [TVM](#tvm)
 - [MLIR](#mlir)
-- [RISC-V](#risc-v)
-- [DSA](#dsa)
+- [Hardware](#hardware)
 - [Talks](#talks)
 - [Courses](#courses)
 
@@ -25,115 +24,71 @@
 # Halide
 
 - Decoupling Algorithms from Schedules for Easy Optimization of Image Processing Pipelines [[paper](https://people.csail.mit.edu/jrk/halide12/halide12.pdf)] 
+- MIT 6.815/6.865 [[link](https://stellar.mit.edu/S/course/6/sp15/6.815/materials.html)]
+  - 对Halide的核心思想，调度原语做了很好的介绍，非常多的例子，具有很好的参考价值；
 
 
 
 # TVM
 
 - TVM: An Automated End-to-End Optimizing Compiler for Deep Learning [[paper](https://homes.cs.washington.edu/~arvind/papers/tvm.pdf)]
-
-  
-
-- Enabling TVM on RISC-V Architectures with SIMD Instructions [[slide](https://riscv.org/wp-content/uploads/2019/03/16.45-Enabling-TVM-on-RISC-V-Architectures-with-SIMD-Instructions-v2.pdf)]
-
-
-
-- TVM and XLA区别: https://zhuanlan.zhihu.com/p/87664838
-
-  
-
-- TVM schedule
-
-  - An Operational Model of Schedules in  Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
-
-
-
-- TVM Conf 2020 - Tutorials - Bring Your Own Codegen to TVM [[video](https://www.youtube.com/watch?v=DD8GdZ_OKco)]
-  - dev guide: https://tvm.apache.org/docs/dev/relay_bring_your_own_codegen.html
-  - blog: https://tvm.apache.org/2020/07/15/how-to-bring-your-own-codegen-to-tvm
-
-
+- Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
 
 - Scalable and Intelligent Learning Systems [[thesis](https://digital.lib.washington.edu/researchworks/handle/1773/44766)]
 
   - 陈天奇的phd thesis
 
-    
-
-- Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
-
-
-
-- Bridging PyTorch and TVM [[web](https://tvm.apache.org/2020/07/14/bert-pytorch-tvm)]
-
-  
-
-- Compilation of Quantized Models in TVM [[pdf](http://lenlrx.cn/wp-content/uploads/2019/11/Nov8_TVM_meetup_Quantization.pdf)]
-
-
-
-- The quantization story for TVM [[web](https://discuss.tvm.apache.org/t/quantization-story/3920)]
-
-  
-
-- Graph partitioning a -nd Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
-
-  
-
+- TVM Conf 2020 - Tutorials - Bring Your Own Codegen to TVM [[video](https://www.youtube.com/watch?v=DD8GdZ_OKco)]
+  - dev guide: https://tvm.apache.org/docs/dev/relay_bring_your_own_codegen.html
+  - blog: https://tvm.apache.org/2020/07/15/how-to-bring-your-own-codegen-to-tvm
 - TVM Object System Multi language Support for just 19 99 [[video](https://www.youtube.com/watch?v=-TM_EPih4Co)]
-
-  - Cross-Language interaction in Deep Learning
   - What is in an ABI?
   - TVM Object System
   - Packed Function
 
-  
+- Bridging PyTorch and TVM [[web](https://tvm.apache.org/2020/07/14/bert-pytorch-tvm)]
+
+- TVM schedule: An Operational Model of Schedules in Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
+
+- TVM and XLA区别 [[link](https://zhuanlan.zhihu.com/p/87664838)] 
+
+- The quantization story for TVM [[web](https://discuss.tvm.apache.org/t/quantization-story/3920)]
+- Compilation of Quantized Models in TVM [[pdf](http://lenlrx.cn/wp-content/uploads/2019/11/Nov8_TVM_meetup_Quantization.pdf)]
+
+- Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+
+- Enabling TVM on RISC-V Architectures with SIMD Instructions [[slide](https://riscv.org/wp-content/uploads/2019/03/16.45-Enabling-TVM-on-RISC-V-Architectures-with-SIMD-Instructions-v2.pdf)]
 
 - TVM PackedFunc实现机制 [[link](https://hjchen2.github.io/2020/01/10/TVM-PackedFunc%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/)]
-
-  
-
+- TVM之Tensor数据结构解读 [[zhihu](https://zhuanlan.zhihu.com/p/341257418)]
+  - 对于Tensor，Operation之间的关系做了比较好的介绍；
 - TVM Relay Build Flow [[link](https://zhuanlan.zhihu.com/p/257150960)]
-
-  
-
 - TVM的“hello world“基础流程（上）[[link](https://blog.csdn.net/jinzhuojun/article/details/117135551)]
+  - 写的非常专业，对一些TE/TIE中的python/C++类做了介绍；
 
 - TVM中的IR设计与技术实现 [[blog](https://www.cnblogs.com/CocoML/p/14643355.html)]
+  - 对IRModule和Module做了介绍；
 
 
 
 # MLIR
 
 - MLIR: A Compiler Infrastructure for the End of Moore's Law [[paper](https://arxiv.org/abs/2002.11054)]
-
 - Multi-Level Intermediate Representation Compiler Infrastructure [[slide](https://docs.google.com/presentation/d/11-VjSNNNJoRhPlLxFgvtb909it1WNdxTnQFipryfAPU/edit#slide=id.g7d334b12e5_0_4)]
-
 - MLIR: Scaling Compiler Infrastructure for Domain Specific Computation [[paper](https://research.google/pubs/pub49988/)]
-
-  
-
 - Thoughts on Tensor Code Generation in MLIR [[video](https://drive.google.com/file/d/1PKY5yVEL0Dl5UHaok4NgpxnbwXbi5pxS/view)] [[slide](https://docs.google.com/presentation/d/1M44If0Lw2lnrlyE_xNU1WOmXWxLo9FibMwdUbrAhOhU/edit#slide=id.g5fd22bdf8c_0_0)]
-
-
 
 - HIGH PERFORMANCE CODE GENERATION IN MLIR: AN EARLY CASE STUDY WITH GEMM [[paper](https://arxiv.org/pdf/2003.00532.pdf)]
 
 - Polyhedral Compilation Opportunities in MLIR [[slide](http://impact.gforge.inria.fr/impact2020/slides/IMPACT_2020_keynote.pdf)]
 
-
-
-- Compiling ONNX Neural Network Models Using MLIR [[paper](https://arxiv.org/pdf/2008.08272.pdf)]
+- Compiling ONNX Neural Network Models Using MLIR [[paper](https://arxiv.org/pdf/2008.08272.pdf)] [[github](https://github.com/onnx/onnx-mlir)]
 
 
 
-# RISC-V
+# Hardware
 
 - Design of the RISC-V Instruction Set Architecture [[thesis](https://digitalassets.lib.berkeley.edu/etd/ucb/text/Waterman_berkeley_0028E_15908.pdf)]
-
-
-
-# DSA
 
 - Custom Hardware Architectures for Deep Learning on Portable Devices: A Review [[paper](https://ieeexplore.ieee.org/abstract/document/9447019)]
 - 从GPU谈异构（4）[[zhihu](https://zhuanlan.zhihu.com/p/376409878)]
@@ -149,6 +104,7 @@
 
 # Courses
 
-- CS448h - Domain-specific Languages for Graphics, Imaging, and Beyond: http://cs448h.stanford.edu/
+- CS448h - Domain-specific Languages for Graphics, Imaging, and Beyond [[link]( http://cs448h.stanford.edu/)]
   - Designing intermediate representations;
   - IR design, transformations, and code generation;
+- CSE 599W: System for ML [[link](https://dlsys.cs.washington.edu/)]
