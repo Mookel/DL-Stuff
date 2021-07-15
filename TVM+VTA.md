@@ -18,10 +18,10 @@
   * [3.5 End2End](#35-end2end)
 - [4. TVM Support](#4-tvm-support)
   * [4.1 VTA Low-Level Build Flow](#41-vta-low-level-build-flow)
-    + [4.1.1 函数入口和build_config](#411函数入口和build_config)
+    + [4.1.1 函数入口和build_config](#411-函数入口和build_config)
     + [4.1.2 VTA Low-Level Build Flow](#412-vta-low-level-build-flow)
     + [4.1.3 codegen.build_module实现](#413-codegenbuild-module实现)
-    + [4.1.4 相关问题](#414相关问题
+    + [4.1.4 相关问题](#414-相关问题)
     + [4.1.5 总结](#415总结)
   * [4.2 VTA Runtime](#42-vta-runtime)
     + [4.2.1 runtime](#421-runtime)
