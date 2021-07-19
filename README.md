@@ -50,22 +50,29 @@
 ## Basics
 
 - TVM: Design and Architecture [[web](https://tvm.apache.org/docs/dev/index.html)]
-
 - TVM Object System Multi language Support for just 19.99 [[video](https://www.youtube.com/watch?v=-TM_EPih4Co)]
   - What is in an ABI?
   - TVM Object System
   - Packed Function
-
 - TVM PackedFunc实现机制 [[link](https://hjchen2.github.io/2020/01/10/TVM-PackedFunc%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/)]
 - TVM之Tensor数据结构解读 [[zhihu](https://zhuanlan.zhihu.com/p/341257418)]
   - 对于Tensor，Operation之间的关系做了比较好的介绍；
 - TVM中的IR设计与技术实现 [[blog](https://www.cnblogs.com/CocoML/p/14643355.html)]
   - 对IRModule和Module做了非常专业的介绍
+- [IR] Unified TVM IR Infra [[RFC]( https://discuss.tvm.apache.org/t/ir-unified-tvm-ir-infra/4801)]
+  - 陈天奇提出的RFC, 里面提到了几个重要的改进和设计目标：
+    - A unified module, pass and type system for all IR function variants.
+    - Two major variants of IR expressions and functions: the high-level functional IR(relay)and the tensor-level IR for loop optimizations.
+    - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
+    - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
+  - 他提出的这个RFC是目前TVM的基石，很厉害！
 
 ## Schedule
 
 - TVM schedule: An Operational Model of Schedules in Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
 - Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
+- Contributing new docs for InferBound [[DISCUSS](https://discuss.tvm.apache.org/t/discuss-contributing-new-docs-for-inferbound/2151)]
+  - 对Infer Bound pass的内核做了很好的介绍，对Schedule抽象也做了部分介绍；
 
 ## Quantization
 
