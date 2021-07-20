@@ -4,14 +4,28 @@
 - [Halide](#halide)
 - [TVM](#tvm)
   * [Basics](#basics)
-  * [Schedule](#schedule)
+  * [Tensor IR and Schedule](#tensor-ir-and-schedule)
   * [Quantization](#quantization)
   * [Build Flow](#build-flow)
   * [Runtime](#runtime)
+  * [Custom Accelarator Support](#custom-accelarator-support)
 - [MLIR](#mlir)
 - [Hardware](#hardware)
 - [Talks](#talks)
 - [Courses](#courses)
+
+# Comprehensive Survey
+
+- Deep Learning Compilers [[slide](https://ucbrise.github.io/cs294-ai-sys-sp19/assets/lectures/lec12/dl-compilers.pdf)]
+  - 说明了DL Compiler领域需要解决的问题；
+  - 强调了Halide的短板和TVM，TC要解决的问题；
+- The Evolution of Domain-Specific Computing for Deep Learning [[paper](https://ieeexplore.ieee.org/abstract/document/9439420/)]
+  - Xilinx Lab所撰写的survey paper；
+  - 里面对AIE Engine做了一些介绍；
+  - 对MLIR生成AIE code做了简单介绍；
+- Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
+
+
 
 # Comprehensive Survey
 
@@ -55,6 +69,11 @@
   - TVM Object System
   - Packed Function
 - TVM PackedFunc实现机制 [[link](https://hjchen2.github.io/2020/01/10/TVM-PackedFunc%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/)]
+- TVM Codebase Walkthrough by Example [[doc](https://tvm.apache.org/docs/dev/codebase_walkthrough.html)]
+  - 官方文档
+
+## Tensor IR and Schedule
+
 - TVM之Tensor数据结构解读 [[zhihu](https://zhuanlan.zhihu.com/p/341257418)]
   - 对于Tensor，Operation之间的关系做了比较好的介绍；
 - TVM中的IR设计与技术实现 [[blog](https://www.cnblogs.com/CocoML/p/14643355.html)]
@@ -66,13 +85,13 @@
     - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
     - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
   - 他提出的这个RFC是目前TVM的基石，很厉害！
-
-## Schedule
-
 - TVM schedule: An Operational Model of Schedules in Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
 - Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
 - Contributing new docs for InferBound [[DISCUSS](https://discuss.tvm.apache.org/t/discuss-contributing-new-docs-for-inferbound/2151)]
   - 对Infer Bound pass的内核做了很好的介绍，对Schedule抽象也做了部分介绍；
+  - 对应的官方文档: https://tvm.apache.org/docs/dev/inferbound.html?highlight=inferbound
+- 也谈TVM和深度学习编译器 [[知乎](https://zhuanlan.zhihu.com/p/87664838)]
+  - 里面有Tensor IR的语法定义；
 
 ## Quantization
 
@@ -92,6 +111,26 @@
 ## Runtime
 
 - Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+- TVM Runtime System [[doc](https://tvm.apache.org/docs/dev/runtime.html)]
+- Device/Target Interactions [[doc](https://tvm.apache.org/docs/dev/device_target_interactions.html)]
+
+## Custom Accelarator Support
+
+- Feedback on TVM port to custom accelerator [[discuss](https://discuss.tvm.apache.org/t/feedback-on-tvm-port-to-custom-accelerator/9548)]
+  - 介绍了为啥不使用BYOC框架及不参考VTA的详细原因；
+
+> ...
+>
+> - We have looked into using BYOC, but we felt like this was a very direct mapping of Relay to instructions, which bypasses a lot of scheduling/optimization magic (Tensor Expressions, AutoTVM) from the rest of the TVM stack. It also did not seem like a very scalable solution to us, since it seems like we would have to map a lot of Relay instructions directly to a HWLib function call, which we also have to develop ourselves.
+> - We have looked into VTA, but VTA is quite different from our platform. We don’t have a fully fledged workstation host device at hand, apart from the bare metal microcontroller. Also we would like to compile as much as possible statically and AoT, and not in a JIT-fashion. Maybe there are some accelerator specific parts we can reuse though. If someone can share their experience on reusing some of this work that would be very insightful!
+>
+> ...
+>
+> > Is tensorization an option here, or do you need to do more with the TIR after schedule generation?
+>
+> Yes, i’m currently trying to use tensorization to map entire convolutions and data preparation steps (data layout, padding) to a HWLib function call, but the process hasn’t been particularly smooth for such coarse computations i’m afraid. [Getting data to be transformed from TVM seems suboptimal.](https://discuss.tvm.apache.org/t/te-using-reshape-without-copy/9480) Also creating large tensorization intrinsics is tricky; Right now for example it looks like I would have to generate a separate TIR pass, because I can not merge e.g.`Relu(Conv(Pad(ChgDataLayout(input)),filter))` into one intrinsic; [tensorize/tir does not allow for creating an intrinsic with nested computations 3](https://discuss.tvm.apache.org/t/tensorize-how-to-use-tensorize-for-composition-op-eg-conv-relu/2336) The TIR pass i’m envisioning could detect those sequential operations and maybe merge them into one as a workaround for this problem.
+
+
 
 # MLIR
 
