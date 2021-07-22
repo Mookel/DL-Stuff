@@ -1,19 +1,19 @@
+# Table of contents
 
-# Contents
 - [Comprehensive Survey](#comprehensive-survey)
 - [Halide](#halide)
 - [TVM](#tvm)
-  * [Basics](#basics)
-  * [Tensor IR and Schedule](#tensor-ir-and-schedule)
-  * [Quantization](#quantization)
-  * [Build Flow](#build-flow)
-  * [Runtime](#runtime)
-  * [Custom Accelarator Support](#custom-accelarator-support)
+  - [Basics](#basics)
+  - [Tensor IR and Schedule](#tensor-ir-and-schedule)
+  - [Quantization](#quantization)
+  - [Build Flow](#build-flow)
+  - [Runtime](#runtime)
+  - [Custom Accelarator Support](#custom-accelarator-support)
 - [MLIR](#mlir)
 - [Hardware](#hardware)
 - [Talks](#talks)
 - [Courses](#courses)
-- [Team](#team)
+- [TEAM](#team)
 
 # Comprehensive Survey
 
