@@ -13,6 +13,7 @@
 - [Hardware](#hardware)
 - [Talks](#talks)
 - [Courses](#courses)
+- [Team](#team)
 
 # Comprehensive Survey
 
@@ -25,28 +26,13 @@
   - 对MLIR生成AIE code做了简单介绍；
 - Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
 
-
-
-# Comprehensive Survey
-
-- Deep Learning Compilers [[slide](https://ucbrise.github.io/cs294-ai-sys-sp19/assets/lectures/lec12/dl-compilers.pdf)]
-  - 说明了DL Compiler领域需要解决的问题；
-  - 强调了Halide的短板和TVM，TC要解决的问题；
-- The Evolution of Domain-Specific Computing for Deep Learning [[paper](https://ieeexplore.ieee.org/abstract/document/9439420/)]
-  - Xilinx Lab所撰写的survey paper；
-  - 里面对AIE Engine做了一些介绍；
-  - 对MLIR生成AIE code做了简单介绍；
-- Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
-
-
+- A New Golden Age for Computer Architecture [[link](https://cacm.acm.org/magazines/2019/2/234352-a-new-golden-age-for-computer-architecture/fulltext)]
 
 # Halide
 
 - Decoupling Algorithms from Schedules for Easy Optimization of Image Processing Pipelines [[paper](https://people.csail.mit.edu/jrk/halide12/halide12.pdf)] 
 - MIT 6.815/6.865 [[link](https://stellar.mit.edu/S/course/6/sp15/6.815/materials.html)]
   - 对Halide的核心思想，调度原语做了很好的介绍，非常多的例子，具有很好的参考价值；
-
-
 
 # TVM
 
@@ -130,7 +116,19 @@
 >
 > Yes, i’m currently trying to use tensorization to map entire convolutions and data preparation steps (data layout, padding) to a HWLib function call, but the process hasn’t been particularly smooth for such coarse computations i’m afraid. [Getting data to be transformed from TVM seems suboptimal.](https://discuss.tvm.apache.org/t/te-using-reshape-without-copy/9480) Also creating large tensorization intrinsics is tricky; Right now for example it looks like I would have to generate a separate TIR pass, because I can not merge e.g.`Relu(Conv(Pad(ChgDataLayout(input)),filter))` into one intrinsic; [tensorize/tir does not allow for creating an intrinsic with nested computations 3](https://discuss.tvm.apache.org/t/tensorize-how-to-use-tensorize-for-composition-op-eg-conv-relu/2336) The TIR pass i’m envisioning could detect those sequential operations and maybe merge them into one as a workaround for this problem.
 
+- Which is the best way to port tvm to a new AI accelerator? [[discuss](https://discuss.tvm.apache.org/t/which-is-the-best-way-to-port-tvm-to-a-new-ai-accelerator/6905)]
 
+  > 1 ： BYOC, BYOC can offload the ops to your new device which your new device support. BYOC is simple and graceful, But we can’t use AutoTVM in BYOC. I think AutoTVM is the very import feature of TVM.
+  >
+  > 2 : Tensorize, By using TVM’s schedule primitive Tensorize, we can replace a unit of computation with the corresponding intrinsic, such as GEMM instruction. We can use AutoTVM in this way, but we may need to use tensorize to modify very ops’s schedule.
+  >
+  > 3 : like cuDNN, we can use tvm to call new device like use cuDNN to call GPU. this way is not better than BYOC
+  >
+  > 4 : like GPU/CPU, we can add a new target in tvm like GPU/CPU, we need develop compute and schedule for every op, we also need to develop graph optimize for this new device. we can use AutoTVM in this way. But this way is the most time-consuming and the most difficult
+  >
+  > I think if we only have the op level’s api of new device, BYOC is the best way.
+  >
+  > If we have ISA level’s interface of new device, which way is the best?
 
 # MLIR
 
@@ -170,3 +168,9 @@
   - Designing intermediate representations;
   - IR design, transformations, and code generation;
 - CSE 599W: System for ML [[link](https://dlsys.cs.washington.edu/)]
+
+
+
+# TEAM
+
+- Zhang Research Group - Accelerating Design of Future Computing Systems : https://zhang.ece.cornell.edu/index.html
