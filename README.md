@@ -97,6 +97,7 @@
 ## Runtime
 
 - Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+- Bring Your Own Codegen to Deep Learning Compiler [[Paper](https://arxiv.org/pdf/2105.03215.pdf)]
 - TVM Runtime System [[doc](https://tvm.apache.org/docs/dev/runtime.html)]
 - Device/Target Interactions [[doc](https://tvm.apache.org/docs/dev/device_target_interactions.html)]
 
