@@ -5,8 +5,9 @@
   - [_build_for_device](#_build_for_device)
   - [codegen.build_module](#codegenbuild_module)
 - [Relay Build Flow](#relay-build-flow)
-  - [几个关键函数](#)
-  - [几个关键抽象](#)
+  - [关键函数&Flow](#flow)
+  - [关键抽象](#)
+  - [简化用例（dnnl）](#dnnl)
 - [Lower实现](#lower)
 - [Tensorization](#tensorization)
   - [What's Tensorization](#whats-tensorization)
@@ -156,15 +157,148 @@ runtime::Module Build(IRModule mod, Target target) {
 }
 ```
 
-在这个接口里或获取对应target的build函数(PackedFunc类型)，然后利用该函数进行实际的build过程；在VTA这个例子下，“target->kind->name”为“llvm”，所以“build_f_name”为：target.build.llvm，然后再调用这函数去生成具体的运行时Module；
+在这个接口里或获取对应target的build函数(PackedFunc类型)，然后利用该函数进行实际的build过程去生成具体的运行时Module；
 
 # Relay Build Flow
 
- 参见见https://zhuanlan.zhihu.com/p/257150960 文档。
+## 关键函数&Flow
 
-## 几个关键函数
+### `python relay.build`
 
-- RelayBuildModule: `Build`
+```python
+def build(ir_mod, target=None, target_host=None, params=None, mod_name="default"):
+    # fmt: off
+    # pylint: disable=line-too-long
+    """Helper function that builds a Relay function to run on TVM graph executor.
+
+    Parameters
+    ----------
+    ir_mod : :py:class:`~tvm.IRModule`
+        The IR module to build. Using relay.Function is deprecated.
+
+    target : str, :any:`tvm.target.Target`, or dict of str(i.e. device/context name) to str/tvm.target.Target, optional
+        For heterogeneous compilation, it is a dictionary indicating context to
+        target mapping. For homogeneous compilation, it is a build target.
+
+    target_host : str or :any:`tvm.target.Target`, optional
+        Host compilation target, if target is device.
+        When TVM compiles device specific program such as CUDA,
+        we also need host(CPU) side code to interact with the driver
+        setup the dimensions and parameters correctly.
+        target_host is used to specify the host side codegen target.
+        By default, llvm is used if it is enabled,
+        otherwise a stackvm intepreter is used.
+
+    params : dict of str to NDArray
+        Input parameters to the graph that do not change
+        during inference time. Used for constant folding.
+
+    mod_name: Optional[str]
+        The module name we will build
+
+    Returns
+    -------
+    factory_module : tvm.relay.backend.executor_factory.ExecutorFactoryModule
+            The runtime factory for the TVM graph executor.
+    """
+    # pylint: enable=line-too-long
+    # fmt: on
+    if not isinstance(ir_mod, (IRModule, _function.Function)):
+        raise ValueError("Type of input parameter mod must be tvm.IRModule")
+
+    if isinstance(ir_mod, _function.Function):
+        if params:
+            ir_mod = bind_params_by_name(ir_mod, params)
+        ir_mod = IRModule.from_expr(ir_mod)
+        warnings.warn(
+            "Please use input parameter mod (tvm.IRModule) "
+            "instead of deprecated parameter mod (tvm.relay.function.Function)",
+            DeprecationWarning,
+        )
+    target = _update_target(target)
+    if isinstance(target_host, (str, Target)):
+        target_host = Target(target_host)
+    elif target_host:
+        raise ValueError("target host must be the type of str, " + "tvm.target.Target, or None")
+
+    target, target_host = Target.check_and_update_host_consist(
+        target, target_host, target_is_dict_key=False
+    )
+
+    # Retrieve the executor from the target
+    executor = get_executor_from_target(target, target_host)
+
+    # If current dispatch context is fallback context (the default root context),
+    # then load pre-tuned parameters from TopHub
+    if isinstance(autotvm.DispatchContext.current, autotvm.FallbackContext):
+        tophub_context = autotvm.tophub.context(list(target.values()))
+    else:
+        tophub_context = autotvm.utils.EmptyContext()
+
+    with tophub_context:
+        bld_mod = BuildModule()
+        # python buildModule() --> c++ RelayBuildModule
+        # bld_mod.build = c++ RelayBuildModule.build
+        executor_config, runtime_mod, params = bld_mod.build(
+            mod=ir_mod, target=target, params=params, executor=executor
+        )
+        #print("exector_config: ", executor_config)
+        #print("runtime_mod:", runtime_mod)
+        func_metadata = bld_mod.get_function_metadata()
+        #print("func_metadata:", func_metadata)
+
+        if executor == "aot":
+            executor_factory = _executor_factory.AOTExecutorFactoryModule(
+                ir_mod, target, runtime_mod, mod_name, params, func_metadata
+            )
+        elif executor == "graph":
+            executor_factory = _executor_factory.GraphExecutorFactoryModule(
+                ir_mod, target, executor_config, runtime_mod, mod_name, params, func_metadata
+            )
+        else:
+            assert False, "Executor " + executor + " not supported"
+
+        return executor_factory
+```
+
+该函数会调用底层的`RelayBuildModule`来完成实际的build工作，RelayBuildModule返回值被`BuildOutput`封装：
+
+```c++
+/*!
+ * \brief Output of building module
+ */
+struct BuildOutput {
+  std::string graph_json;
+  runtime::Module mod;
+  std::unordered_map<std::string, tvm::runtime::NDArray> params;
+};
+```
+
+- executor_config: 如果是用的是graph excutor codegen，则是graph json，否则是None；
+- metadata runtime module
+- params
+
+python侧会用RelayBuildModule的get_function机制来查询结果中的特定信息：
+
+```python
+class BuildModule(object):
+    """Build an IR module to run on TVM graph executor. This class is used
+    to expose the `RelayBuildModule` APIs implemented in C++.
+    """
+
+    def __init__(self):
+        self.mod = _build_module._BuildModule()
+        self._get_graph_json = self.mod["get_graph_json"]
+        self._get_module = self.mod["get_module"]
+        ...
+        self._set_params_func = self.mod["set_params"]
+        self._get_params_func = self.mod["get_params"]
+        self._get_function_metadata = self.mod["get_function_metadata"]
+```
+
+### `RelayBuildModule: Build`
+
+该函数会利用BuildRelay完成所有的编译工作；
 
 ```c++
   void Build(IRModule mod, const TargetsMap& targets, const tvm::Target& target_host,
@@ -180,21 +314,11 @@ runtime::Module Build(IRModule mod, Target target) {
   }
 ```
 
-- RelayBuildModule: `BuildRelay`
+### `RelayBuildModule: BuildRelay`
+
+完成真正的Relay Function的编译工作：
 
 ```c++
-std::unique_ptr<ExecutorCodegen> MakeExecutorCodegen(String executor_str) {
-  std::unique_ptr<ExecutorCodegen> ret;
-  if (executor_str == runtime::kTvmExecutorGraph) {
-    ret = std::make_unique<GraphCodegen>();
-  } else if (executor_str == runtime::kTvmExecutorAot) {
-    ret = std::make_unique<AOTCodegen>();
-  } else {
-    CHECK(false) << "Executor " << executor_str << " not supported";
-  }
-  return ret;
-}
-...
 void BuildRelay(IRModule relay_module,
                   const std::unordered_map<std::string, tvm::runtime::NDArray>& params) {
     Target target_host = GetTargetHost();
@@ -277,70 +401,40 @@ void BuildRelay(IRModule relay_module,
   }
 ```
 
-- tvm::build
+总结起来，其步骤主要为：
 
-```c++
-// Build for heterogeneous execution.
-runtime::Module build(const Map<Target, IRModule>& inputs_arg, const Target& target_host_arg) {
-  auto pass_ctx = transform::PassContext::Current();
+- 执行IRModule优化，主要侧重于高层Relay level级别的优化（后续我会深入分析）
+- 通过MakeExecutorCodegen根据executor的不同创建不同的high-level codegen引擎，executor主要有AOT和Graph方式；
+- 基于创建的codegen引擎完成具体的high-level编译，codegen后会提供如下信息供当前build module查询和后续使用：
+  - params
+  - lower functions(target -> PrimFunc)
+  - external runtime moudles
+  - meta data
+  - graph json string: 如果是graph executor codegen，返回具体的json string，否则为“”
+- 设置ret_.params;
+- 设置ret_.graph_json;
+- （如果lower_func存在则）调用tvm::build完成low-level PrimFunc的编译，返回host runtime module；
+- 把相关参数集合在一起，然后创建MetaData Module，涉及到的参数有：
+  - params
+  - host runtime module
+  - external runtime modules
+  - target host
+  - meta data
+- 从meta module中移除在external module中存在的constants；
+- 设置ret_.mod, 此时需要return的所有数据已经ready了；
 
-  std::vector<runtime::Module> device_modules;
-  Map<Target, IRModule> inputs = inputs_arg;
-  Target target_host = target_host_arg;
+> 对于lower function的编译时利用`tvm::build`函数，这个和python版本差不了太多，唯一差别是不需要lower操作，其他流程基本一样，会把lower function编译生成不同的runtime module并且统一打包一个返回：
+>
+> ```c++
+> // Build for heterogeneous execution.
+> runtime::Module build(const Map<Target, IRModule>& inputs_arg, const Target& target_host_arg) {
+>   ...
+> }
+> ```
+>
+> 
 
-  // Fetch previous defined target host in targets
-  CheckAndUpdateHostConsistency(&inputs, &target_host);
-
-  if (!target_host.defined()) {
-    for (const auto& it : inputs) {
-      if (it.first->kind->device_type == kDLCPU || it.first->kind->device_type == kDLMicroDev) {
-        target_host = it.first;
-        break;
-      }
-    }
-  }
-
-  if (!target_host.defined()) {
-    target_host = DefaultTargetHost(target_host);
-  }
-
-  // Update target host for all targets
-  CheckAndUpdateHostConsistency(&inputs, &target_host);
-
-  IRModule mhost_all = IRModule(Map<GlobalVar, BaseFunc>());
-
-  ICHECK(mhost_all.defined()) << "The host module must be defined";
-
-  for (const auto& it : inputs) {
-    if (it.second.defined()) {
-      auto pair = SplitDevHostFuncs(it.second, it.first, target_host, pass_ctx);
-      auto& mhost = pair.first;
-      auto& mdevice = pair.second;
-
-      ICHECK(mhost.defined()) << "The split host module must be defined";
-
-      ICHECK(mhost_all.defined()) << "The host module must be defined";
-
-      mhost_all->Update(mhost);
-
-      if (mdevice->functions.size() != 0) {
-        device_modules.push_back(codegen::Build(mdevice, it.first));
-      }
-    }
-  }
-
-  runtime::Module mhost = codegen::Build(mhost_all, target_host);
-  // Import all modules
-  for (const auto& it : device_modules) {
-    if (it.operator->()) {
-      mhost.Import(it);
-    }
-  }
-  return mhost;
-}
-```
-
-- `GraphExecutorFactoryModule`
+### `GraphExecutorFactoryModule`
 
 ```python
 class GraphExecutorFactoryModule(ExecutorFactoryModule):
@@ -385,6 +479,8 @@ class GraphExecutorFactoryModule(ExecutorFactoryModule):
         self.function_metadata = function_metadata
 ```
 
+通过调用如下的接口返回真正的runtime module；
+
 - `tvm.graph_executor_factory.create`
 
 ```c++
@@ -408,7 +504,122 @@ TVM_REGISTER_GLOBAL("tvm.graph_executor_factory.create")
     });
 ```
 
-## 几个关键抽象
+## 关键抽象
+
+### `GraphCodegen`
+
+`GraphCodegen`主要负责Relay Function的编译，输出结果主要有：
+
+- lower functions(target -> PrimFunc)
+- constant params
+- meta data
+- external runtime modules
+
+对GraphCodegen实现有2个间接层，GraphCodeGen实际上真正的实现链条：
+
+```c++
+         GraphCodeGen    -->   GraphExecutorCodegenModule   -->   GraphExecutorCodegen
+   (对外使用固定wrapper接口)     （Get Function by string key）          （真正实现）
+```
+
+GraphExecutorCodegenModule负责提供getFunction接口，主要有：
+
+- init
+- codegen
+- get_graph_json
+- list_params_name
+- get_param_by_name
+- get_param_id
+- get_irmodule
+- get_external_modules
+- get_metadata
+- get_function_metadata
+
+这些function的所有实现都要依赖底层真正的实现者`GraphExecutorCodegen`；
+
+GraphExecutorCodegen的Codegen实现如下：
+
+```c++
+class GraphExecutorCodegen : public backend::MemoizedExprTranslator<std::vector<GraphNodeRef>> {
+ public:
+  GraphExecutorCodegen(runtime::Module* mod, const TargetsMap& targets) : mod_(mod) {
+    compile_engine_ = CompileEngine::Global();
+    targets_ = targets;
+  }
+  ...
+      
+  LoweredOutput Codegen(relay::Function func) {
+    auto pf = GetPackedFunc("relay.backend.GraphPlanMemory");
+    storage_device_map_ = (*pf)(func);
+    UpdateMainWorkspaceSize(func);
+    // First we convert all the parameters into input nodes.
+    for (auto param : func->params) {
+      auto node_ptr = GraphInputNode::make_node_ptr(param->name_hint(), GraphAttrs());
+      var_map_[param.get()] = AddNode(node_ptr, param);
+    }
+    heads_ = VisitExpr(func->body);
+    std::ostringstream os;
+    dmlc::JSONWriter writer(&os);
+    GetJSON(&writer);
+    LoweredOutput ret;
+    ret.graph_json = os.str();
+    ret.params = std::unordered_map<std::string, std::pair<int, const tvm::runtime::NDArray>>();
+    for (auto param : params_) {
+      ret.params.emplace(std::make_pair(
+          param.first,
+          std::make_pair(static_cast<int>(param_storage_ids_[param.first]), param.second)));
+    }
+
+    for (auto& kv : lowered_funcs_) {
+      if (ret.lowered_funcs.count(kv.first) == 0) {
+        ret.lowered_funcs.Set(kv.first, IRModule(Map<GlobalVar, BaseFunc>({})));
+      }
+      auto& mod = ret.lowered_funcs[kv.first];
+      mod->Update(kv.second);
+      ret.lowered_funcs.Set(kv.first, mod);
+    }
+    ret.external_mods = compile_engine_->LowerExternalFunctions();
+    ret.function_metadata = std::move(function_metadata_);
+    return ret;
+  }
+```
+
+> 注：送到codegen接口的Function应该都是要经过如下pass而partition之后的func，以dnnl为例：
+>
+> - transform.MergeComposite(dnnl_patterns);
+> - transform.AnnotateTarget("dnnl");
+> - transform.PartitionGraph();
+> - ...
+
+#### codegen流程
+
+TODO
+
+
+
+### `CompileEngine`
+
+
+
+### `MetadataModule`
+
+
+
+### `GraphExecutorFactory`
+
+
+
+### `GraphExecutor`
+
+
+
+## 简化用例（dnnl）
+
+### 完整用例代码
+
+
+
+### 深入剖析
 
 
 
@@ -564,4 +775,3 @@ void ArrayCopyFromBytes(DLTensor* handle, const void* data, size_t nbytes) {
   DeviceAPI::Get(handle->device)->StreamSync(handle->device, nullptr);
 }
 ```
-
