@@ -1,6 +1,7 @@
 # Table of contents
 
 - [Comprehensive Survey](#comprehensive-survey)
+- [Miscellaneous](#miscellaneous)
 - [Halide](#halide)
 - [TVM](#tvm)
   - [Basics](#basics)
@@ -8,6 +9,7 @@
   - [Quantization](#quantization)
   - [Build Flow](#build-flow)
   - [Runtime](#runtime)
+  - [BYOC](#byoc)
   - [Custom Accelarator Support](#custom-accelarator-support)
 - [MLIR](#mlir)
 - [Hardware](#hardware)
@@ -25,8 +27,15 @@
   - 里面对AIE Engine做了一些介绍；
   - 对MLIR生成AIE code做了简单介绍；
 - Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
-
 - A New Golden Age for Computer Architecture [[link](https://cacm.acm.org/magazines/2019/2/234352-a-new-golden-age-for-computer-architecture/fulltext)]
+
+
+
+# Miscellaneous
+
+- AI框架算子层级的思考 [[zhihu](https://zhuanlan.zhihu.com/p/388682140)]
+- tvm or mlir ？[[zhihu](https://zhuanlan.zhihu.com/p/388452164)]
+- WAIC 2021 深度学习编译框架前沿技术闭门论坛 [[link](https://gitee.com/MondayYuan/WAIC-DLCompiler-MeetingMinutes)]
 
 # Halide
 
@@ -57,6 +66,13 @@
 - TVM PackedFunc实现机制 [[link](https://hjchen2.github.io/2020/01/10/TVM-PackedFunc%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6/)]
 - TVM Codebase Walkthrough by Example [[doc](https://tvm.apache.org/docs/dev/codebase_walkthrough.html)]
   - 官方文档
+- Unified TVM IR Infra [[RFC]( https://discuss.tvm.apache.org/t/ir-unified-tvm-ir-infra/4801)]
+  - 陈天奇提出的RFC, 里面提到了几个重要的改进和设计目标：
+    - A unified module, pass and type system for all IR function variants.
+    - Two major variants of IR expressions and functions: the high-level functional IR(relay)and the tensor-level IR for loop optimizations.
+    - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
+    - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
+  - 他提出的这个RFC是目前TVM的基石，很厉害！
 
 ## Tensor IR and Schedule
 
@@ -64,13 +80,6 @@
   - 对于Tensor，Operation之间的关系做了比较好的介绍；
 - TVM中的IR设计与技术实现 [[blog](https://www.cnblogs.com/CocoML/p/14643355.html)]
   - 对IRModule和Module做了非常专业的介绍
-- [IR] Unified TVM IR Infra [[RFC]( https://discuss.tvm.apache.org/t/ir-unified-tvm-ir-infra/4801)]
-  - 陈天奇提出的RFC, 里面提到了几个重要的改进和设计目标：
-    - A unified module, pass and type system for all IR function variants.
-    - Two major variants of IR expressions and functions: the high-level functional IR(relay)and the tensor-level IR for loop optimizations.
-    - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
-    - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
-  - 他提出的这个RFC是目前TVM的基石，很厉害！
 - TVM schedule: An Operational Model of Schedules in Tensor Expression [[doc](https://docs.google.com/document/d/1nmz00_n4Ju-SpYN0QFl3abTHTlR_P0dRyo5zsWC0Q1k/edit)]
 - Ansor: Generating High-Performance Tensor Programs for Deep Learning [[pdf](https://arxiv.org/pdf/2006.06762.pdf)]
 - Contributing new docs for InferBound [[DISCUSS](https://discuss.tvm.apache.org/t/discuss-contributing-new-docs-for-inferbound/2151)]
@@ -93,13 +102,22 @@
   - 流程图画的还挺清晰
 - TVM的编译流程详解 [[LINK](https://mp.weixin.qq.com/s?__biz=MzA4MjY4NTk0NQ==&mid=2247494801&idx=1&sn=b893c43133eea1343034bb0aca356e24&scene=21#wechat_redirect)]
 - TVM的CodeGen流程[[LINK](https://mp.weixin.qq.com/s?__biz=MzA4MjY4NTk0NQ==&mid=2247495638&idx=1&sn=ca711f6f33e6f83ed9ec27afddb416a0&chksm=9f835540a8f4dc56f3fe77b2d4aefd211220bd61bc3f2bbe03ae425478309d831f339ed6b39a&scene=178&cur_album_id=1788791560017346569#rd)]
+- The lifecycle of opt_gemm in tvm [[blog](https://wenxiaoming.github.io/2020/01/12/The%20lifecycle%20of%20opt_gemm%20in%20tvm/)]
+  - 非常详细介绍了PackFunc实现机制；
+  - 介绍了opt_gemm的执行流程；
 
 ## Runtime
 
-- Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
-- Bring Your Own Codegen to Deep Learning Compiler [[Paper](https://arxiv.org/pdf/2105.03215.pdf)]
 - TVM Runtime System [[doc](https://tvm.apache.org/docs/dev/runtime.html)]
 - Device/Target Interactions [[doc](https://tvm.apache.org/docs/dev/device_target_interactions.html)]
+
+## BYOC
+
+- Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+- Bring Your Own Codegen to Deep Learning Compiler [[Paper](https://arxiv.org/pdf/2105.03215.pdf)]
+  - BYOC框架的原始论文；
+  - 值得注意的是，里面提到了MetaData runtime module的作用，代码看不懂可以参考这个；
+- How to Bring Your Own Codegen to TVM [[blog](https://tvm.apache.org/2020/07/15/how-to-bring-your-own-codegen-to-tvm)]
 
 ## Custom Accelarator Support
 
@@ -136,16 +154,11 @@
 - MLIR: A Compiler Infrastructure for the End of Moore's Law [[paper](https://arxiv.org/abs/2002.11054)]
 - Multi-Level Intermediate Representation Compiler Infrastructure [[slide](https://docs.google.com/presentation/d/11-VjSNNNJoRhPlLxFgvtb909it1WNdxTnQFipryfAPU/edit#slide=id.g7d334b12e5_0_4)]
 - MLIR: Scaling Compiler Infrastructure for Domain Specific Computation [[paper](https://research.google/pubs/pub49988/)]
-
 - Thoughts on Tensor Code Generation in MLIR [[video](https://drive.google.com/file/d/1PKY5yVEL0Dl5UHaok4NgpxnbwXbi5pxS/view)] [[slide](https://docs.google.com/presentation/d/1M44If0Lw2lnrlyE_xNU1WOmXWxLo9FibMwdUbrAhOhU/edit#slide=id.g5fd22bdf8c_0_0)]
-
 - HIGH PERFORMANCE CODE GENERATION IN MLIR: AN EARLY CASE STUDY WITH GEMM [[paper](https://arxiv.org/pdf/2003.00532.pdf)]
-
 - Polyhedral Compilation Opportunities in MLIR [[slide](http://impact.gforge.inria.fr/impact2020/slides/IMPACT_2020_keynote.pdf)]
-
 - Compiling ONNX Neural Network Models Using MLIR [[paper](https://arxiv.org/pdf/2008.08272.pdf)] [[github](https://github.com/onnx/onnx-mlir)]
-
-
+- Abstraction raising in MLIR [[master thesis](https://pure.tue.nl/ws/portalfiles/portal/175414453/Komisarczyk_K..pdf)]
 
 # Hardware
 
