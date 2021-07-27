@@ -6,6 +6,7 @@
 - [TVM](#tvm)
   - [Basics](#basics)
   - [Tensor IR and Schedule](#tensor-ir-and-schedule)
+  - [Tensorization](#tensorization)
   - [Quantization](#quantization)
   - [Build Flow](#build-flow)
   - [Runtime](#runtime)
@@ -16,6 +17,7 @@
 - [Talks](#talks)
 - [Courses](#courses)
 - [TEAM](#team)
+
 
 # Comprehensive Survey
 
@@ -28,8 +30,6 @@
   - 对MLIR生成AIE code做了简单介绍；
 - Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
 - A New Golden Age for Computer Architecture [[link](https://cacm.acm.org/magazines/2019/2/234352-a-new-golden-age-for-computer-architecture/fulltext)]
-
-
 
 # Miscellaneous
 
@@ -88,6 +88,10 @@
 - 也谈TVM和深度学习编译器 [[知乎](https://zhuanlan.zhihu.com/p/87664838)]
   - 里面有Tensor IR的语法定义；
 
+## Tensorization
+
+- How to use tensorize for composition op(eg. conv+relu) [[discuss](https://discuss.tvm.apache.org/t/tensorize-how-to-use-tensorize-for-composition-op-eg-conv-relu/2336)]
+
 ## Quantization
 
 - The quantization story for TVM [[web](https://discuss.tvm.apache.org/t/quantization-story/3920)]
@@ -139,7 +143,7 @@
 
   > 1 ： BYOC, BYOC can offload the ops to your new device which your new device support. BYOC is simple and graceful, But we can’t use AutoTVM in BYOC. I think AutoTVM is the very import feature of TVM.
   >
-  > 2 : Tensorize, By using TVM’s schedule primitive Tensorize, we can replace a unit of computation with the corresponding intrinsic, such as GEMM instruction. We can use AutoTVM in this way, but we may need to use tensorize to modify very ops’s schedule.
+  > 2 : Tensorize, By using TVM’s schedule primitive Tensorize, we can replace a unit of computation with the corresponding intrinsic, such as GEMM instruction. We can use AutoTVM in this way, but we may need to use tensorize to modify every ops’s schedule.
   >
   > 3 : like cuDNN, we can use tvm to call new device like use cuDNN to call GPU. this way is not better than BYOC
   >
@@ -188,3 +192,4 @@
 # TEAM
 
 - Zhang Research Group - Accelerating Design of Future Computing Systems : https://zhang.ece.cornell.edu/index.html
+
