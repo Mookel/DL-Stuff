@@ -80,7 +80,9 @@
 
 - Jared Roesch's PHD thesis [[phd thesis](https://digital.lib.washington.edu/researchworks/handle/1773/46765)]
 - Relay: A New IR for Machine Learning Frameworks [[paper](https://arxiv.org/pdf/1810.00952.pdf)]
+  - 最早期的论文，不够详细；
 - Relay: A High-Level Compiler for Deep Learning [[paper](https://arxiv.org/abs/1904.08368)]
+  - 相比于早期的论文，写的很详细，与PHD thesis里面的很多是一致的；
 - TVM之Relay IR实践 [[zhihu](https://zhuanlan.zhihu.com/p/339348734)]
 
 ## Optimizations
