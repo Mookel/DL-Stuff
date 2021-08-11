@@ -5,6 +5,7 @@
 - [Halide](#halide)
 - [TVM](#tvm)
   - [Basics](#basics)
+  - [Relay](#relay)
   - [Tensor IR and Schedule](#tensor-ir-and-schedule)
   - [Tensorization](#tensorization)
   - [Quantization](#quantization)
@@ -36,6 +37,7 @@
 - AI框架算子层级的思考 [[zhihu](https://zhuanlan.zhihu.com/p/388682140)]
 - tvm or mlir ？[[zhihu](https://zhuanlan.zhihu.com/p/388452164)]
 - WAIC 2021 深度学习编译框架前沿技术闭门论坛 [[link](https://gitee.com/MondayYuan/WAIC-DLCompiler-MeetingMinutes)]
+- Why GEMM is at the heart of deep learning [[blog](https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/)]
 
 # Halide
 
@@ -73,6 +75,17 @@
     - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
     - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
   - 他提出的这个RFC是目前TVM的基石，很厉害！
+
+## Relay
+
+- Relay: A New IR for Machine Learning Frameworks [[paper](https://arxiv.org/pdf/1810.00952.pdf)]
+- Relay: A High-Level Compiler for Deep Learning [[paper](https://arxiv.org/abs/1904.08368)]
+- TVM之Relay IR实践 [[zhihu](https://zhuanlan.zhihu.com/p/339348734)]
+
+## Optimizations
+
+- Operator fusion confusion [[discuss](https://discuss.tvm.apache.org/t/operator-fusion-confusion/4533)]
+  - 提问者请求别人帮助澄清一些operator fusion的概念，但是没有人回答:-(;
 
 ## Tensor IR and Schedule
 
@@ -114,6 +127,21 @@
 
 - TVM Runtime System [[doc](https://tvm.apache.org/docs/dev/runtime.html)]
 - Device/Target Interactions [[doc](https://tvm.apache.org/docs/dev/device_target_interactions.html)]
+- Heterogeneous execution in Relay VM [[RFC](https://github.com/apache/tvm/issues/4178)]
+
+> ## Current Design in Relay Graph Runtime
+>
+> ### Compilation
+>
+> Reference: [#2361](https://github.com/apache/tvm/pull/2361)
+>
+> Summary: If users want to specify a device for an operator to run on, they can use an annotation operator named `on_device(expr, dev_id)` to wrap an expression. At a step `RunDeviceAnnotationPass` during `relay.build`, we will replace `on_device` node with `device_copy` node. At the step of `PasGraphPlanMemory` , we compute the device assignment(`device_type` see next section) of each memory block. This is possible because graph runtime only support static graph, so we can capture all the information statically. Then during native code generation, `device_copy` node is mapped to special packed function named `__copy`.
+>
+> ### Runtime
+>
+> Reference: [#1695](https://github.com/apache/tvm/pull/1695)
+>
+> Summary: In the graph json file, a new field named `device_type` specifies which device a static memory node should be scheduled to, the runtime allocates the memory in on the device accordingly. When graph runtime sees special operator named `__copy`, it calls `TVMArrayCopyFromTo` to move memory across devices correctly.
 
 ## BYOC
 
@@ -167,9 +195,9 @@
 # Hardware
 
 - Design of the RISC-V Instruction Set Architecture [[thesis](https://digitalassets.lib.berkeley.edu/etd/ucb/text/Waterman_berkeley_0028E_15908.pdf)]
-
 - Custom Hardware Architectures for Deep Learning on Portable Devices: A Review [[paper](https://ieeexplore.ieee.org/abstract/document/9447019)]
 - 从GPU谈异构（4）[[zhihu](https://zhuanlan.zhihu.com/p/376409878)]
+- Ten Lessons From Three Generations Shaped Google’s TPUv4i [[pdf](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9499913)]
 
 
 
@@ -192,4 +220,6 @@
 # TEAM
 
 - Zhang Research Group - Accelerating Design of Future Computing Systems : https://zhang.ece.cornell.edu/index.html
+
+- SAMPL: http://sampl.cs.washington.edu/publications.html
 
