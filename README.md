@@ -6,6 +6,7 @@
 - [TVM](#tvm)
   - [Basics](#basics)
   - [Relay](#relay)
+  - [Optimizations](#optimizations)
   - [Tensor IR and Schedule](#tensor-ir-and-schedule)
   - [Tensorization](#tensorization)
   - [Quantization](#quantization)
@@ -14,11 +15,12 @@
   - [BYOC](#byoc)
   - [Custom Accelarator Support](#custom-accelarator-support)
 - [MLIR](#mlir)
+- [IREE](#iree)
 - [Hardware](#hardware)
 - [Talks](#talks)
 - [Courses](#courses)
 - [TEAM](#team)
-
+- [LLVM and Traditional Compiler Techs](#llvm-and-traditional-compiler-techs)
 
 # Comprehensive Survey
 
@@ -38,6 +40,7 @@
 - tvm or mlir ？[[zhihu](https://zhuanlan.zhihu.com/p/388452164)]
 - WAIC 2021 深度学习编译框架前沿技术闭门论坛 [[link](https://gitee.com/MondayYuan/WAIC-DLCompiler-MeetingMinutes)]
 - Why GEMM is at the heart of deep learning [[blog](https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/)]
+- Tensor Processing Primitives: A Programming Abstraction for Efficiency and Portability in Deep Learning Workloads [[paper](https://arxiv.org/pdf/2104.05755.pdf)]
 
 # Halide
 
@@ -89,6 +92,9 @@
 
 - Operator fusion confusion [[discuss](https://discuss.tvm.apache.org/t/operator-fusion-confusion/4533)]
   - 提问者请求别人帮助澄清一些operator fusion的概念，但是没有人回答:-(;
+- TVM代码走读（六） 图优化4-- Fuse ops [[zhihu](https://zhuanlan.zhihu.com/p/153098112)]
+- TVM系列 - 图优化 - 算子融合 [[blog](https://blog.csdn.net/Artyze/article/details/108796250)]
+- Convert Layout Pass [[doc](https://tvm.apache.org/docs/dev/convert_layout.html)]
 
 ## Tensor IR and Schedule
 
@@ -195,6 +201,10 @@
 - Compiling ONNX Neural Network Models Using MLIR [[paper](https://arxiv.org/pdf/2008.08272.pdf)] [[github](https://github.com/onnx/onnx-mlir)]
 - Abstraction raising in MLIR [[master thesis](https://pure.tue.nl/ws/portalfiles/portal/175414453/Komisarczyk_K..pdf)]
 
+# IREE
+
+- Does IREE support custom ML accelerators? [[issue](https://github.com/google/iree/issues/6720)]
+
 # Hardware
 
 - Design of the RISC-V Instruction Set Architecture [[thesis](https://digitalassets.lib.berkeley.edu/etd/ucb/text/Waterman_berkeley_0028E_15908.pdf)]
@@ -202,14 +212,10 @@
 - 从GPU谈异构（4）[[zhihu](https://zhuanlan.zhihu.com/p/376409878)]
 - Ten Lessons From Three Generations Shaped Google’s TPUv4i [[pdf](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9499913)]
 
-
-
 # Talks
 
 - The Golden Age of Compilers, in an era of Hardware/Software co-design [[slide](https://docs.google.com/presentation/d/1ZMtzT6nmfvNOlIaHRzdaXpFeaAklcT7DvfGjhgpzcxk/edit#slide=id.p)] [[video](https://drive.google.com/file/d/1eIxFZZLOM7a3LYL1QaKhflKl0jRLPp-V/view)]
   - A discussion about accelerator design, benefits of reducing fragmentation by standardizing non-differentiated parts of large scale HW/SW systems.
-
-
 
 # Courses
 
@@ -218,11 +224,17 @@
   - IR design, transformations, and code generation;
 - CSE 599W: System for ML [[link](https://dlsys.cs.washington.edu/)]
 
-
-
 # TEAM
 
 - Zhang Research Group - Accelerating Design of Future Computing Systems : https://zhang.ece.cornell.edu/index.html
 
 - SAMPL: http://sampl.cs.washington.edu/publications.html
 
+# LLVM and Traditional Compiler Techs
+
+- 一步步掌握 LLVM [[知乎专栏](https://www.zhihu.com/column/c_1250484713606819840)]
+- Compiler Design Lab 
+  - SSA Construction [[link](https://compilers.cs.uni-saarland.de/projects/ssaconstr/)]
+  - SSA-based Register Allocation [[link](https://compilers.cs.uni-saarland.de/projects/ssara/)]
+- Register Allocation for Programs in SSA Form [[phd thesis](https://publikationen.bibliothek.kit.edu/1000007166/6532)]
+-  Advanced course on compilers (spring 2015) [[link](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015)]
