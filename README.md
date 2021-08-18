@@ -20,7 +20,6 @@
 - [Talks](#talks)
 - [Courses](#courses)
 - [TEAM](#team)
-- [LLVM and Traditional Compiler Techs](#llvm-and-traditional-compiler-techs)
 
 # Comprehensive Survey
 
@@ -229,12 +228,3 @@
 - Zhang Research Group - Accelerating Design of Future Computing Systems : https://zhang.ece.cornell.edu/index.html
 
 - SAMPL: http://sampl.cs.washington.edu/publications.html
-
-# LLVM and Traditional Compiler Techs
-
-- 一步步掌握 LLVM [[知乎专栏](https://www.zhihu.com/column/c_1250484713606819840)]
-- Compiler Design Lab 
-  - SSA Construction [[link](https://compilers.cs.uni-saarland.de/projects/ssaconstr/)]
-  - SSA-based Register Allocation [[link](https://compilers.cs.uni-saarland.de/projects/ssara/)]
-- Register Allocation for Programs in SSA Form [[phd thesis](https://publikationen.bibliothek.kit.edu/1000007166/6532)]
--  Advanced course on compilers (spring 2015) [[link](https://wiki.aalto.fi/display/t1065450/Advanced+compilers+2015)]
