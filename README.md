@@ -1,6 +1,7 @@
 # Table of contents
 
 - [Comprehensive Survey](#comprehensive-survey)
+- [IR Design](#ir-design)
 - [Miscellaneous](#miscellaneous)
 - [Halide](#halide)
 - [TVM](#tvm)
@@ -12,7 +13,6 @@
   - [Quantization](#quantization)
   - [Build Flow](#build-flow)
   - [Runtime](#runtime)
-  - [BYOC](#byoc)
   - [Custom Accelarator Support](#custom-accelarator-support)
 - [MLIR](#mlir)
 - [IREE](#iree)
@@ -33,13 +33,16 @@
 - Compute Substrate for Software 2.0 [[paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9373921)]
 - A New Golden Age for Computer Architecture [[link](https://cacm.acm.org/magazines/2019/2/234352-a-new-golden-age-for-computer-architecture/fulltext)]
 
+# IR Design
+
+- Tensor Processing Primitives: A Programming Abstraction for Efficiency and Portability in Deep Learning Workloads [[paper](https://arxiv.org/pdf/2104.05755.pdf)]
+
 # Miscellaneous
 
 - AI框架算子层级的思考 [[zhihu](https://zhuanlan.zhihu.com/p/388682140)]
 - tvm or mlir ？[[zhihu](https://zhuanlan.zhihu.com/p/388452164)]
 - WAIC 2021 深度学习编译框架前沿技术闭门论坛 [[link](https://gitee.com/MondayYuan/WAIC-DLCompiler-MeetingMinutes)]
 - Why GEMM is at the heart of deep learning [[blog](https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/)]
-- Tensor Processing Primitives: A Programming Abstraction for Efficiency and Portability in Deep Learning Workloads [[paper](https://arxiv.org/pdf/2104.05755.pdf)]
 
 # Halide
 
@@ -77,10 +80,14 @@
     - First-class Python and hybrid script support, and a cross-language in-memory IR structure.
     - A unified runtime::Module to enable extensive combination of traditional devices, microcontrollers and NPUs.
   - 他提出的这个RFC是目前TVM的基石，很厉害！
+- Introduction to TOPI [[doc](https://tvm.apache.org/docs/tutorials/topi/intro_topi.html#generic-schedules-and-fusing-operations)]
 
 ## Relay
 
 - Jared Roesch's PHD thesis [[phd thesis](https://digital.lib.washington.edu/researchworks/handle/1773/46765)]
+  - 融合实现及怎么schedule fuse op的思路
+  - 定点的实现；
+  - relay op的runtime实现（待细看）
 - Relay: A New IR for Machine Learning Frameworks [[paper](https://arxiv.org/pdf/1810.00952.pdf)]
   - 最早期的论文，不够详细；
 - Relay: A High-Level Compiler for Deep Learning [[paper](https://arxiv.org/abs/1904.08368)]
@@ -89,11 +96,29 @@
 
 ## Optimizations
 
-- Operator fusion confusion [[discuss](https://discuss.tvm.apache.org/t/operator-fusion-confusion/4533)]
-  - 提问者请求别人帮助澄清一些operator fusion的概念，但是没有人回答:-(;
+### Fusion
+
 - TVM代码走读（六） 图优化4-- Fuse ops [[zhihu](https://zhuanlan.zhihu.com/p/153098112)]
 - TVM系列 - 图优化 - 算子融合 [[blog](https://blog.csdn.net/Artyze/article/details/108796250)]
+- Jared Roesch's PHD thesis [[phd thesis](https://digital.lib.washington.edu/researchworks/handle/1773/46765)]
+  - 里面介绍了怎么给fused_op做schedule的思路
+  - 具体tvm的实现代码为：能inline的话就inline（traverse_inline），否则就是root；
+- Operator fusing with AutoTVM on GPU [[disscuss](https://discuss.tvm.apache.org/t/operator-fusing-with-autotvm-on-gpu/3725)]
+- Regarding Operator Fusion [[discuss](https://discuss.tvm.apache.org/t/regarding-operator-fusion/8657)]
+
+> “Op fusion happens later in the pipeline. AutoTVM extracts tuning tasks from a graph before fusion, so it only looks at individual op (conv, dense etc).
+>
+> Our fusion rule is not hardware dependent (for now). Both CPU and GPU backend get the same fused operator. We only fuse cheap ops into convolution, dense etc, with the assumption that a tuned convolution schedule is also optimal if it is fused with other cheap ops. That allows autotvm tuning and fusion be done independently.”
+
+### ConvertLayout
+
 - Convert Layout Pass [[doc](https://tvm.apache.org/docs/dev/convert_layout.html)]
+
+### AutoTvm
+
+- Search-space and Learning-based Transformations [[doc](https://tvm.apache.org/docs/dev/index.html#transformations)]
+
+
 
 ## Tensor IR and Schedule
 
@@ -109,9 +134,13 @@
 - 也谈TVM和深度学习编译器 [[知乎](https://zhuanlan.zhihu.com/p/87664838)]
   - 里面有Tensor IR的语法定义；
 
+
+
 ## Tensorization
 
 - How to use tensorize for composition op(eg. conv+relu) [[discuss](https://discuss.tvm.apache.org/t/tensorize-how-to-use-tensorize-for-composition-op-eg-conv-relu/2336)]
+
+
 
 ## Quantization
 
@@ -133,8 +162,13 @@
 
 ## Runtime
 
+### Basics
+
 - TVM Runtime System [[doc](https://tvm.apache.org/docs/dev/runtime.html)]
 - Device/Target Interactions [[doc](https://tvm.apache.org/docs/dev/device_target_interactions.html)]
+
+### Heterogeneous
+
 - Heterogeneous execution in Relay VM [[RFC](https://github.com/apache/tvm/issues/4178)]
 
 > ## Current Design in Relay Graph Runtime
@@ -151,13 +185,22 @@
 >
 > Summary: In the graph json file, a new field named `device_type` specifies which device a static memory node should be scheduled to, the runtime allocates the memory in on the device accordingly. When graph runtime sees special operator named `__copy`, it calls `TVMArrayCopyFromTo` to move memory across devices correctly.
 
-## BYOC
-
 - Graph partitioning and Heterogeneous Execution [[RFC](https://discuss.tvm.apache.org/t/graph-partitioning-and-heterogeneous-execution/504)]
+
+### Dynamic Support
+
+- Extending TVM with Dynamic Execution [[slides](https://tvmconf.org/slides/2019/Jared-Roesch-Haichen-Shen-RelayVM.pdf)]
+- Jared Roesch's PHD thesis [[phd thesis](https://digital.lib.washington.edu/researchworks/handle/1773/46765)]
+- Relay Dynamic Runtime [[RFC](https://github.com/apache/tvm/issues/2810)]
+
+### BYOC
+
 - Bring Your Own Codegen to Deep Learning Compiler [[Paper](https://arxiv.org/pdf/2105.03215.pdf)]
   - BYOC框架的原始论文；
   - 值得注意的是，里面提到了MetaData runtime module的作用，代码看不懂可以参考这个；
 - How to Bring Your Own Codegen to TVM [[blog](https://tvm.apache.org/2020/07/15/how-to-bring-your-own-codegen-to-tvm)]
+
+
 
 ## Custom Accelarator Support
 
