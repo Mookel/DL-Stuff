@@ -1,5 +1,3 @@
-[TOC]
-
 # Dominators and Static Single Assignment
 
 - Compiler Design Lab 
