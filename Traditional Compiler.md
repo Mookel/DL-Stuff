@@ -1,7 +1,9 @@
+[TOC]
 
 # Dominators and Static Single Assignment
 
 - Compiler Design Lab 
+
   - SSA Construction [[link](https://compilers.cs.uni-saarland.de/projects/ssaconstr/)]
   - SSA-based Register Allocation [[link](https://compilers.cs.uni-saarland.de/projects/ssara/)]
 
@@ -65,7 +67,7 @@
 # LLVM
 
 - 一步步掌握 LLVM [[知乎专栏](https://www.zhihu.com/column/c_1250484713606819840)]
--  Enna1’s study notes about LLVM and Clang [[link](https://llvm-clang-study-notes.readthedocs.io/en/latest/index.html)]
+- Enna1’s study notes about LLVM and Clang [[link](https://llvm-clang-study-notes.readthedocs.io/en/latest/index.html)]
 
 # Courses
 
@@ -89,26 +91,8 @@
   - E85: Digital Electronics & Computer Architecture [[link](http://pages.hmc.edu/harris/class/e85/)]
 - Digital Design and Computer Architecture Spring 2021 (252-0028-00L) [[link](https://safari.ethz.ch/digitaltechnik/spring2021/doku.php?id=start)]
 
+## Language
 
-
-
-
-# Notes 
-
-## DCC888 Course
-
-### Control Flow Graphs
-
-- DAG + value numbers的概念描述的非常清晰；
-- local register allocation有算法描述，也解释的很清晰；spill的算法采用的是Belady算法；
-
-> ### The theoretically optimal page replacement algorithm
->
-> The theoretically optimal page replacement algorithm (also known as OPT, [clairvoyant](https://en.wikipedia.org/wiki/Clairvoyance) replacement algorithm, or [Bélády's](https://en.wikipedia.org/wiki/László_Bélády) optimal page replacement policy)[[3\]](https://en.wikipedia.org/wiki/Page_replacement_algorithm#cite_note-3)[[4\]](https://en.wikipedia.org/wiki/Page_replacement_algorithm#cite_note-4)[[2\]](https://en.wikipedia.org/wiki/Page_replacement_algorithm#cite_note-lecture_notes_jones-2) is an algorithm that works as follows: ***when a page needs to be swapped in, the [operating system](https://en.wikipedia.org/wiki/Operating_system) swaps out the page whose next use will occur farthest in the future.*** For example, a page that is not going to be used for the next 6 seconds will be swapped out over a page that is going to be used within the next 0.4 seconds.
->
-> This algorithm cannot be implemented in a general purpose operating system because it is impossible to compute reliably how long it will be before a page is going to be used, except when all software that will run on a system is either known beforehand and is amenable to static analysis of its memory reference patterns, or only a class of applications allowing run-time analysis. Despite this limitation, algorithms exist[*[citation needed](https://en.wikipedia.org/wiki/Wikipedia:Citation_needed)*] that can offer near-optimal performance — the operating system keeps track of all pages referenced by the program, and it uses those data to decide which pages to swap in and out on subsequent runs. This algorithm can offer near-optimal performance, but not on the first run of a program, and only if the program's memory reference pattern is relatively consistent each time it runs.
->
-> Analysis of the paging problem has also been done in the field of [online algorithms](https://en.wikipedia.org/wiki/Online_algorithm). Efficiency of randomized online algorithms for the paging problem is measured using [amortized analysis](https://en.wikipedia.org/wiki/Amortized_analysis).
-
-
-
+- Python
+  - MIT - Introduction to Computer Science and Programming in Python [[link](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/index.htm)]
+  - CS 61A: Structure and Interpretation of Computer Programs [[link](https://inst.eecs.berkeley.edu/~cs61a/fa20/)]
